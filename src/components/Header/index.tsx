@@ -1,7 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-//Components
 import { Navbar, Container, Nav } from "react-bootstrap";
-//Icons
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaTasks } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
@@ -22,13 +20,13 @@ export default function Header() {
         <Navbar.Toggle>
           <AiOutlineMenu />
         </Navbar.Toggle>
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Collapse>
           <Nav className="me-auto">
             {
               //Render all nav items.
               items.map((navItem, i) => {
                 //Determine if need to be enabled.
-                let isNavActive = pathname === navItem.link;
+                let isNavActive = pathname.includes(navItem.link);
 
                 return (
                   <Nav.Link
@@ -53,7 +51,7 @@ const items = [
   {
     name: "Tarefas",
     icon: <FaTasks />,
-    link: "/tasks",
+    link: "/tasks/all",
   },
   {
     name: "Perfil",

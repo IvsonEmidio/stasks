@@ -1,3 +1,5 @@
 export default function Footer() {
-  return <div className="text-center">Stasks - 2022</div>;
+  return (
+    <div className="text-center">Stasks - A awesome task manager</div>
+  );
 }
