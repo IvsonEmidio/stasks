@@ -3,19 +3,20 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaTasks } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
+import logo from "../../images/logo.jpg";
 
 export default function Header() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="white" expand="lg">
       <Container>
         <Navbar.Brand
           style={{ cursor: "pointer" }}
           onClick={() => navigate("/home")}
         >
-          sTasks
+          <img alt="logo" style={{ height: 50, width: 180 }} src={logo}></img>
         </Navbar.Brand>
         <Navbar.Toggle>
           <AiOutlineMenu />
@@ -51,7 +52,7 @@ const items = [
   {
     name: "Tarefas",
     icon: <FaTasks />,
-    link: "/tasks/all",
+    link: "/tasks/doing",
   },
   {
     name: "Perfil",

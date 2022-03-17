@@ -27,7 +27,10 @@ export async function getTasks() {
   try {
     let request = await api.get(backEndUBaseUrl + "tasks");
     if (request) {
-      return request.data;
+      let { status } = request.data;
+      if (status === 1) {
+        return request.data.data;
+      }
     }
     return false;
   } catch (err) {
@@ -37,7 +40,7 @@ export async function getTasks() {
 
 export async function deleteTask(id: Number) {
   try {
-    let request = await api.delete(backEndUBaseUrl + "tasks/" + id);
+    let request = await api.delete(backEndUBaseUrl + "tasks/?id=" + id);
     if (request) {
       return request.data;
     }

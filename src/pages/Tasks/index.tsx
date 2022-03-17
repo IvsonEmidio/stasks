@@ -55,6 +55,9 @@ export default function Tasks() {
           //Render all tasks according to the selected nav
           tasksData.map((task, i) => {
             let showDeleteIcon = true;
+            if (task.status === 0) {
+              showDeleteIcon = false;
+            }
             if (nav === "doing") {
               if (task.status === 0) {
                 return null;
@@ -63,7 +66,6 @@ export default function Tasks() {
               if (task.status === 1) {
                 return null;
               }
-              showDeleteIcon = false;
             }
             return (
               <Card key={i} className="mt-2">
@@ -90,7 +92,7 @@ export default function Tasks() {
                           {task.title}{" "}
                           <Badge bg="dark">
                             {task.time} -{" "}
-                            {task.date.split("/").reverse().join("/")}
+                            {task.date.split("-").reverse().join("/")}
                           </Badge>
                         </p>
                       </div>
@@ -122,7 +124,7 @@ const title = ({ nav, tasks }: Title) => {
     if (task.status === 1) {
       doingTasks++;
     } else if (task.status === 0) {
-      canceledTasks++
+      canceledTasks++;
     }
   }, []);
 
@@ -131,7 +133,8 @@ const title = ({ nav, tasks }: Title) => {
       response = "Atualmente você tem " + doingTasks + " tarefas em andamento.";
       break;
     case "canceled":
-      response = "Atualmente você tem " + canceledTasks + " tarefas canceladas.";
+      response =
+        "Atualmente você tem " + canceledTasks + " tarefas canceladas.";
       break;
     default:
       response = "Atualmente você tem " + totalTasks + " tarefas.";
