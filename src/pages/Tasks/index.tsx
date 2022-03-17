@@ -3,23 +3,60 @@ import { AiOutlineFieldTime } from "react-icons/ai";
 import { FaRunning } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import TasksNavbar from "../../components/TasksNavbar";
-import { tasksData } from "./data";
-import { FiTrash } from "react-icons/fi";
-import { BiEdit } from "react-icons/bi";
+import { FiBox, FiTrash } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import NewTaskModal from "../../components/NewTaskModal";
+import { deleteTask, getTasks } from "../../API";
+import Skeleton from "react-loading-skeleton";
 
 export default function Tasks() {
   const { nav } = useParams();
+  const [tasksData, setTasksData] = useState<Array<TasksData>>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    let fetchData = async () => {
+      let data = await getTasks();
+      if (data) {
+        setTasksData(data);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleTaskDelete = async (id: Number) => {
+    setIsLoading(true);
+    let request = await deleteTask(id);
+    if (request) {
+      let data = await getTasks();
+      if (data) {
+        setTasksData(data);
+        setIsLoading(false);
+      }
+    }
+  };
+
+  if (isLoading) {
+    return loadingSkeleton();
+  } else if (tasksData && tasksData.length === 0) {
+    return emptyState();
+  }
 
   return (
     <Container className="mt-1">
+      {<NewTaskModal />}
+
       <TasksNavbar />
       <div className="p-1">
-        <h4 className="p-2">
+        <h4 className="p-3">
           {title({ nav: nav, qntTasks: tasksData.length })}
         </h4>
         {
           //Render all tasks according to the selected nav
           tasksData.map((task, i) => {
+            let showDeleteIcon = true;
             if (nav === "doing") {
               if (task.status === 0) {
                 return null;
@@ -28,6 +65,7 @@ export default function Tasks() {
               if (task.status === 1) {
                 return null;
               }
+              showDeleteIcon = false;
             }
             return (
               <Card key={i} className="mt-2">
@@ -35,27 +73,34 @@ export default function Tasks() {
                   <Card.Title>
                     <div className="float-right">
                       <div>
-                        <Badge bg="dark" className="float-end mt-1">
-                          <FiTrash />
-                        </Badge>
-                        <Badge
-                          style={{ backgroundColor: "#8e24aa" }}
-                          bg="bcaaa4"
-                          className="float-end me-2 mt-1"
-                        >
-                          <BiEdit />
-                        </Badge>
+                        {showDeleteIcon && (
+                          <Badge
+                            bg="dark"
+                            className="float-end mt-1"
+                            onClick={() => handleTaskDelete(task.id)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <FiTrash />
+                          </Badge>
+                        )}
+
                         <Badge bg="light" className="float-end">
                           {statusIcon(task.status)}
                         </Badge>
 
-                        <p className="ms-2">{task.title}</p>
+                        <p className="ms-2">
+                          {task.title}{" "}
+                          <Badge bg="dark">
+                            {task.time} -{" "}
+                            {task.date.split("/").reverse().join("/")}
+                          </Badge>
+                        </p>
                       </div>
                     </div>
                   </Card.Title>
                 </Card.Header>
                 <Card.Body>
-                  <p>{task.notes}</p>
+                  <p>{task.note}</p>
                 </Card.Body>
               </Card>
             );
@@ -98,7 +143,52 @@ const statusIcon = (status: Number) => {
   }
 };
 
+const loadingSkeleton = () => {
+  return (
+    <Container className="mt-1">
+      {<NewTaskModal />}
+
+      <TasksNavbar />
+      <div className="p-1">
+        <Skeleton height={60} highlightColor={"#8e24aa"} count={5} />
+      </div>
+    </Container>
+  );
+};
+
+const emptyState = () => {
+  return (
+    <Container className="mt-1">
+      {<NewTaskModal />}
+
+      <TasksNavbar />
+      <div className="row mt-5 pd-2">
+        <div
+          className="col"
+          style={{ justifyContent: "center", display: "flex" }}
+        >
+          <Card bg="light">
+            <h3 className="ms-4">
+              Está tudo tão vazio, que tal adicionar algumas tarefas?
+              <i className="ms-2 me-4">{<FiBox />}</i>
+            </h3>
+          </Card>
+        </div>
+      </div>
+    </Container>
+  );
+};
+
 interface Title {
   nav: string | undefined;
   qntTasks: Number;
+}
+
+interface TasksData {
+  id: Number;
+  title: string;
+  note: string;
+  date: string;
+  time: string;
+  status: Number;
 }

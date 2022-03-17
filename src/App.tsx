@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Tasks from "./pages/Tasks";
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'react-loading-skeleton/dist/skeleton.css'
 import Home from "./pages/Home";
 
 function App() {
