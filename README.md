@@ -1,4 +1,6 @@
-![](https://raw.githubusercontent.com/IvsonEmidio/stasks/Tasks-Page/src/images/logo.jpg?token=GHSAT0AAAAAABSMISMPO4CU4YIGOLYJETMCYRSUQVQ)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/IvsonEmidio/stasks/Tasks-Page/src/images/logo.jpg?token=GHSAT0AAAAAABSMISMPO4CU4YIGOLYJETMCYRSUQVQ" />
+</p>
 
 
 
