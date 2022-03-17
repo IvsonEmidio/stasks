@@ -80,6 +80,7 @@ export default function NewTaskModal() {
           date: "",
           time: "",
         });
+        return window.location.replace("/tasks/doing");
       } else {
         setErrorMsg(
           "Ocorreu um erro desconhecido, por favor, tente novamente mais tarde"
