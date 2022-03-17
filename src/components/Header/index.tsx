@@ -15,7 +15,7 @@ export default function Header() {
           style={{ cursor: "pointer" }}
           onClick={() => navigate("/home")}
         >
-          Stasks
+          sTasks
         </Navbar.Brand>
         <Navbar.Toggle>
           <AiOutlineMenu />

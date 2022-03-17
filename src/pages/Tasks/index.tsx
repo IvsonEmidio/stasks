@@ -50,9 +50,7 @@ export default function Tasks() {
 
       <TasksNavbar />
       <div className="p-1">
-        <h4 className="p-3">
-          {title({ nav: nav, qntTasks: tasksData.length })}
-        </h4>
+        <h4 className="p-3">{title({ nav: nav, tasks: tasksData })}</h4>
         {
           //Render all tasks according to the selected nav
           tasksData.map((task, i) => {
@@ -114,17 +112,29 @@ export default function Tasks() {
 /**
  * Title depending to a nav click
  */
-const title = ({ nav, qntTasks }: Title) => {
-  let response: string;
+const title = ({ nav, tasks }: Title) => {
+  let response: String;
+  let totalTasks: Number = tasks.length;
+  let doingTasks: number = 0;
+  let canceledTasks: number = 0;
+
+  tasks.forEach((task) => {
+    if (task.status === 1) {
+      doingTasks++;
+    } else if (task.status === 0) {
+      canceledTasks++
+    }
+  }, []);
+
   switch (nav) {
     case "doing":
-      response = "Atualmente você tem " + qntTasks + " tarefas em andamento.";
+      response = "Atualmente você tem " + doingTasks + " tarefas em andamento.";
       break;
     case "canceled":
-      response = "Atualmente você tem " + qntTasks + " tarefas canceladas.";
+      response = "Atualmente você tem " + canceledTasks + " tarefas canceladas.";
       break;
     default:
-      response = "Atualmente você tem " + qntTasks + " tarefas.";
+      response = "Atualmente você tem " + totalTasks + " tarefas.";
       break;
   }
   return response;
@@ -181,7 +191,7 @@ const emptyState = () => {
 
 interface Title {
   nav: string | undefined;
-  qntTasks: Number;
+  tasks: Array<TasksData>;
 }
 
 interface TasksData {
