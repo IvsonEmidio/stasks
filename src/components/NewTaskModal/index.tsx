@@ -1,64 +1,44 @@
+import { TaskObject } from "../../interfaces";
 import { useState } from "react";
-import { Modal, Button, Form, Badge, Toast } from "react-bootstrap";
+import { Modal, Button, Form, Badge } from "react-bootstrap";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import Skeleton from "react-loading-skeleton";
 import { createTask } from "../../API";
+import { useNavigate } from "react-router-dom";
 
 export default function NewTaskModal() {
   const [isModalOpen, setIsModalOpen] = useState<boolean | undefined>(false);
   const handleClick = () => setIsModalOpen(!isModalOpen);
-  const handleClickClose = () => setIsModalOpen(false);
-  const [taskData, setTaskData] = useState<TasksData>({
+  const [taskData, setTaskData] = useState<TaskObject>({
     title: "",
     note: "",
     date: "",
     time: "",
   });
-  const [errorMsg, setErrorMsg] = useState<String>("");
-  const [successMsg, setSuccessMsg] = useState<String>("");
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [successMsg, setSuccessMsg] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const handleTitle = (title: String) => {
-    //Keep old values on the new object
-    let newData = {
-      title: title,
-      note: taskData.note,
-      date: taskData.date,
-      time: taskData.time,
-    };
-
-    return setTaskData(newData);
-  };
-
-  const handleNote = (note: String) => {
-    let newData = {
-      title: taskData.title,
-      note: note,
-      date: taskData.date,
-      time: taskData.time,
-    };
-    return setTaskData(newData);
-  };
-
-  const handleDate = (date: String) => {
-    let newData = {
-      title: taskData.title,
-      note: taskData.note,
-      date: date,
-      time: taskData.time,
-    };
-    return setTaskData(newData);
-  };
-
-  const handleTime = (time: String) => {
-    let newData = {
-      title: taskData.title,
-      note: taskData.note,
-      date: taskData.date,
-      time: time,
-    };
-
-    return setTaskData(newData);
+  const handleValues = (value: any, key: string) => {
+    let newObject = taskData;
+    switch (key) {
+      case "title":
+        newObject.title = value;
+        break;
+      case "note":
+        newObject.note = value;
+        break;
+      case "date":
+        newObject.date = value;
+        break;
+      case "time":
+        newObject.time = value;
+        break;
+      default:
+        break;
+    }
+    setTaskData(newObject);
   };
 
   const handleSubmit = async () => {
@@ -80,7 +60,7 @@ export default function NewTaskModal() {
           date: "",
           time: "",
         });
-        return window.location.replace("/tasks/doing");
+        return navigate("/task-added", { replace: true });
       } else {
         setErrorMsg(
           "Ocorreu um erro desconhecido, por favor, tente novamente mais tarde"
@@ -105,7 +85,7 @@ export default function NewTaskModal() {
         <AiOutlinePlusCircle size={20} />
       </Badge>
 
-      <Modal show={isModalOpen} onHide={() => handleClickClose()}>
+      <Modal show={isModalOpen} onHide={handleClick}>
         <Modal.Header closeButton>
           <Modal.Title>Adicione uma nova tarefa</Modal.Title>
         </Modal.Header>
@@ -116,7 +96,7 @@ export default function NewTaskModal() {
               <Form.Control
                 type="text"
                 placeholder="Insira o nome da tarefa"
-                onChange={(e) => handleTitle(e.target.value)}
+                onChange={(e) => handleValues(e.target.value, "title")}
               />
             </Form.Group>
 
@@ -124,7 +104,7 @@ export default function NewTaskModal() {
               <Form.Label>Notas</Form.Label>
               <textarea
                 className="form-control"
-                onChange={(e) => handleNote(e.target.value)}
+                onChange={(e) => handleValues(e.target.value, "note")}
                 placeholder="Se quiser, você pode inserir notas sobre essa tarefa."
                 style={{ height: 100 }}
               ></textarea>
@@ -132,14 +112,14 @@ export default function NewTaskModal() {
             <Form.Group className="mb-3">
               <Form.Label>Data</Form.Label>
               <Form.Control
-                onChange={(e) => handleDate(e.target.value)}
+                onChange={(e) => handleValues(e.target.value, "date")}
                 type="date"
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Horario</Form.Label>
               <Form.Control
-                onChange={(e) => handleTime(e.target.value)}
+                onChange={(e) => handleValues(e.target.value, "time")}
                 type="time"
               />
             </Form.Group>
@@ -152,7 +132,7 @@ export default function NewTaskModal() {
           <p style={{ color: "green", textAlign: "center" }}>{successMsg}</p>
         )}
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClickClose}>
+          <Button variant="secondary" onClick={handleClick}>
             Cancelar
           </Button>
           <Button onClick={() => handleSubmit()} variant="primary">
@@ -178,10 +158,3 @@ const loadingSkeleton = () => {
     </div>
   );
 };
-
-interface TasksData {
-  title: String;
-  note: String;
-  date: String;
-  time: String;
-}

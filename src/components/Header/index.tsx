@@ -1,8 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { AiOutlineMenu } from "react-icons/ai";
-import { FaTasks } from "react-icons/fa";
-import { CgProfile } from "react-icons/cg";
+import { items } from "./items";
 import logo from "../../images/logo.jpg";
 
 export default function Header() {
@@ -47,16 +46,3 @@ export default function Header() {
     </Navbar>
   );
 }
-
-const items = [
-  {
-    name: "Tarefas",
-    icon: <FaTasks />,
-    link: "/tasks/doing",
-  },
-  {
-    name: "Perfil",
-    icon: <CgProfile />,
-    link: "/profile",
-  },
-];
