@@ -38,7 +38,7 @@ npm start
 - You can open an issue ticket on 'issues' tab
 - You can feel free to make this project better in any aspects
 ```
-After contribute, you just need to do an pull request.
+After contribute, you just need to submit an pull request.
 ```
 ## TODO LIST.
 
