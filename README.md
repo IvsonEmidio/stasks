@@ -7,7 +7,7 @@
 ## Features
 - Create a task with note and expiration date
 - Cancel task and move to 'canceled' tab
-- Edit all task
+- Edit all tasks
 - Show all tasks in separated tab
 
 ## Techs
