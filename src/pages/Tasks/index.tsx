@@ -303,9 +303,6 @@ const title = ({ nav, tasks }: Title) => {
  * Status of an task icon
  */
 const statusIcon = (status: Number | undefined) => {
-  if (!status) {
-    return;
-  }
   let iconSize = 25;
   switch (status) {
     case 0: //Cancelled
